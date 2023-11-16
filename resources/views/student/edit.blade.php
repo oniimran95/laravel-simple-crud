@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Student Create') }}
+            {{ __('Student Edit') }}
         </h2>
     </x-slot>
 
@@ -10,8 +10,9 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <a href="{{ route('students.index') }}" class="py-3 text-xl text-blue-500 block"><< Go back to home page</a>
-                    <form action="{{ route('students.store') }}" method="post">
+                    <form action="{{ route('students.update', $student->id) }}" method="post">
                         @csrf
+                        @method('put')
                         <div class="grid grid-cols-2 gap-5">
                             <div>
                                 <label for="name" class="block">Name</label>
@@ -21,6 +22,7 @@
                                     type="text"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Name"
+                                    value="{{ $student->name }}"
                                 />
                             </div>
                             <div>
@@ -31,6 +33,7 @@
                                     type="email"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Email"
+                                    value="{{ $student->email }}"
                                 />
                             </div>
                             <div>
@@ -41,6 +44,7 @@
                                     type="date"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Date of Birth"
+                                    value="{{ date('Y-m-d', strtotime($student->date_of_birth)) }}"
                                 />
                             </div>
                             
@@ -53,6 +57,7 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if($student->gender === 'male') checked @endif
                         />
                         <label for="male">Male</label>
 
@@ -62,6 +67,7 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if($student->gender === 'female') checked @endif
                         />
                         <label for="female">Female</label>
 
@@ -71,12 +77,13 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if($student->gender === 'others') checked @endif
                         />
                         <label for="others">Others</label>
 
                         <input
                           type="submit"
-                          value="Insert"
+                          value="Update"
                           class="focus:outline-none mt-5 bg-purple-500 px-4 py-2 text-white font-bold w-full cursor-pointer"
                         />
                     </form>

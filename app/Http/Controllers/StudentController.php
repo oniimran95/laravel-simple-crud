@@ -46,7 +46,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        //
+        return view('student.edit', compact('student'));
     }
 
     /**
@@ -54,7 +54,8 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        //
+        Student::whereId($student->id)->update($request->except(['_token', '_method']));
+        return redirect()->route('students.index');
     }
 
     /**

@@ -17,8 +17,8 @@ return new class extends Migration
             $table->string('email', 100)->nullable();
             $table->enum('gender', ['male','female','others']);
             $table->timestamp('date_of_birth')->nullable();
-            $table->string('class', 50);
-            $table->string('department', 100);
+            $table->string('class', 50)->nullable();
+            $table->string('department', 100)->nullable();
             $table->timestamps();
         });
     }

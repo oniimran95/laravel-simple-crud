@@ -23,6 +23,7 @@
                                 <th scope="col" class="px-6 py-3">Email</th>
                                 <th scope="col" class="px-6 py-3">Gender</th>
                                 <th scope="col" class="px-6 py-3">Date of Birth</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -33,6 +34,9 @@
                                 <td class="px-6 py-4">{{ $target->email }}</td>
                                 <td class="px-6 py-4 capitalize">{{ $target->gender }}</td>
                                 <td class="px-6 py-4 capitalize">{{ date('d/m/Y', strtotime($target->date_of_birth)) }}</td>
+                                <td>
+                                    <a href="{{ route('students.edit', $target->id) }}">Edit</a>
+                                </td>
                             </tr>
                             @endforeach
                         </tbody>
