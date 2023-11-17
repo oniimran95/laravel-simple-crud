@@ -30,7 +30,7 @@ class StudentController extends Controller
     public function store(Request $request)
     {
         Student::create($request->all());
-        return redirect()->route('students.index');
+        return redirect()->route('students.index')->with('success', 'Student has been created successfully.');
     }
 
     /**
@@ -55,7 +55,7 @@ class StudentController extends Controller
     public function update(Request $request, Student $student)
     {
         Student::whereId($student->id)->update($request->except(['_token', '_method']));
-        return redirect()->route('students.index');
+        return redirect()->route('students.index')->with('success', 'Student has been Updated.');
     }
 
     /**
@@ -63,6 +63,7 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
-        //
+        Student::whereId($student->id)->delete();
+        return back()->with('success', 'Student has been Deleted.');
     }
 }
