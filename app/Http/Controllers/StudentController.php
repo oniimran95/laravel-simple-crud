@@ -32,7 +32,7 @@ class StudentController extends Controller
         $input_data = $request->all();
         if ($request->hasFile('image')) {
             $fileName = time() . '.' . $request->image->extension();
-            $path = $request->image->storeAs('public/images', $fileName);
+            $request->image->storeAs('public/images', $fileName);
             $img_path = "storage/images/$fileName";
 
             $input_data['image'] = $img_path;
@@ -68,7 +68,7 @@ class StudentController extends Controller
         $input_data = $request->except(['_token', '_method']);
         if ($request->hasFile('image')) {
             $fileName = time() . '.' . $request->image->extension();
-            $path = $request->image->storeAs('public/images', $fileName);
+            $request->image->storeAs('public/images', $fileName);
             $img_path = "storage/images/$fileName";
 
             $input_data['image'] = $img_path;
