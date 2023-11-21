@@ -13,6 +13,7 @@ class Student extends Model
         'name',
         'email',
         'gender',
+        'image',
         'date_of_birth',
         'class',
         'department'

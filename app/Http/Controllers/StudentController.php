@@ -29,7 +29,17 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        Student::create($request->all());
+        $input_data = $request->all();
+        if ($request->hasFile('image')) {
+            $fileName = time() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('public/images', $fileName);
+            $img_path = "storage/images/$fileName";
+
+            $input_data['image'] = $img_path;
+        }
+        
+
+        Student::create($input_data);
         return redirect()->route('students.index')->with('success', 'Student has been created successfully.');
     }
 
@@ -54,7 +64,18 @@ class StudentController extends Controller
      */
     public function update(Request $request, Student $student)
     {
-        Student::whereId($student->id)->update($request->except(['_token', '_method']));
+        $old_img_path = $student->image;
+        $input_data = $request->except(['_token', '_method']);
+        if ($request->hasFile('image')) {
+            $fileName = time() . '.' . $request->image->extension();
+            $path = $request->image->storeAs('public/images', $fileName);
+            $img_path = "storage/images/$fileName";
+
+            $input_data['image'] = $img_path;
+        }
+
+        Student::whereId($student->id)->update($input_data);
+        @unlink($old_img_path);
         return redirect()->route('students.index')->with('success', 'Student has been Updated.');
     }
 
@@ -64,6 +85,7 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         Student::whereId($student->id)->delete();
+        @unlink($student->image);
         return back()->with('success', 'Student has been Deleted.');
     }
 }

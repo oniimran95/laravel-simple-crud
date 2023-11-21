@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <a href="{{ route('students.index') }}" class="py-3 text-xl text-blue-500 block"><< Go back to home page</a>
-                    <form action="{{ route('students.update', $student->id) }}" method="post">
+                    <form action="{{ route('students.update', $student->id) }}" method="post" enctype="multipart/form-data">
                         @csrf
                         @method('put')
                         <div class="grid grid-cols-2 gap-5">
@@ -46,6 +46,24 @@
                                     placeholder="Date of Birth"
                                     value="{{ date('Y-m-d', strtotime($student->date_of_birth)) }}"
                                 />
+                            </div>
+
+                            <div>
+                                <div class="grid grid-cols-2">
+                                    <div>
+                                        <label for="image" class="block">Image</label>
+                                        <input
+                                            id="image"
+                                            name="image"
+                                            type="file"
+                                            class="py-2"
+                                        />
+                                    </div>
+                                    <div>
+                                        <img src="{{ asset($student->image) }}" alt="">
+                                    </div>
+                                </div>
+                                
                             </div>
                             
                         </div>

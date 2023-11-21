@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <a href="{{ route('students.index') }}" class="py-3 text-xl text-blue-500 block"><< Go back to home page</a>
-                    <form action="{{ route('students.store') }}" method="post">
+                    <form action="{{ route('students.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-2 gap-5">
                             <div>
@@ -43,7 +43,16 @@
                                     placeholder="Date of Birth"
                                 />
                             </div>
-                            
+
+                            <div>
+                                <label for="image" class="block">Image</label>
+                                <input
+                                    id="image"
+                                    name="image"
+                                    type="file"
+                                    class="py-2"
+                                />
+                            </div>
                         </div>
 
                         <label for="gender" class="mt-3 block">Gender</label>
