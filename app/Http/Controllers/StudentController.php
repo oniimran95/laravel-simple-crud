@@ -29,6 +29,12 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'name'              => 'required',
+            'email'             => 'required|email',
+            'date_of_birth'     => 'date_format:Y-m-d',
+            'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        ]);
         $input_data = $request->all();
         if ($request->hasFile('image')) {
             $fileName = time() . '.' . $request->image->extension();

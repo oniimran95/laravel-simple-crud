@@ -9,7 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <a href="{{ route('students.index') }}" class="py-3 text-xl text-blue-500 block"><< Go back to home page</a>
+                    <a href="{{ route('students.index') }}" class="py-3 text-xl text-blue-500"><< Go back to home page</a>
                     <form action="{{ route('students.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="grid grid-cols-2 gap-5">
@@ -19,19 +19,26 @@
                                     id="name"
                                     name="name"
                                     type="text"
+                                    value="{{ old('name') }}"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Name"
                                 />
+                                @error('name')
+                                    <span class="text-red-700">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="email" class="block">Email</label>
                                 <input
                                     id="email"
                                     name="email"
-                                    type="email"
+                                    value="{{ old('email') }}"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Email"
                                 />
+                                @error('email')
+                                    <span class="text-red-700">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="date_of_birth" class="block">Date of Birth</label>
@@ -39,9 +46,13 @@
                                     id="date_of_birth"
                                     name="date_of_birth"
                                     type="date"
+                                    value="{{ old('date_of_birth') }}"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Date of Birth"
                                 />
+                                @error('date_of_birth')
+                                    <span class="text-red-700">{{$message}}</span>
+                                @enderror
                             </div>
 
                             <div>
@@ -52,6 +63,9 @@
                                     type="file"
                                     class="py-2"
                                 />
+                                @error('image')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                         </div>
 
@@ -62,6 +76,7 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if( old('gender') === 'male') checked @endif
                         />
                         <label for="male">Male</label>
 
@@ -71,6 +86,7 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if( old('gender') === 'female') checked @endif
                         />
                         <label for="female">Female</label>
 
@@ -80,6 +96,7 @@
                             name="gender"
                             type="radio"
                             class="appearance-none checked:bg-blue-500"
+                            @if( old('gender') === 'others') checked @endif
                         />
                         <label for="others">Others</label>
 

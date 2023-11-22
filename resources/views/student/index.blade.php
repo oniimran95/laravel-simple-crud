@@ -16,7 +16,7 @@
             @endif
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <a 
+                    <a
                         class="float-right px-3 py-1 bg-black text-white rounded-md mb-3 hover:bg-sky-700"
                         href="{{ route('students.create') }}"
                     >
