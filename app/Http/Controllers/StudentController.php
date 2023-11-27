@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StoreStudentRequest;
 
 class StudentController extends Controller
 {
@@ -12,7 +14,17 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $targets = Student::paginate(25);
+        $targets = Student::select(
+                'students.*',
+                't_classes.name AS class',
+                'student_classes.reg_no',
+                'student_classes.roll_no',
+                'student_classes.result',
+                'student_classes.status'
+            )
+            ->leftJoin('student_classes', 'student_classes.student_id', 'students.id')
+            ->leftJoin('t_classes', 't_classes.id', 'student_classes.t_class_id')
+            ->paginate(25);
         return view('student.index', compact('targets'));
     }
 
@@ -27,15 +39,30 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreStudentRequest $request)
     {
-        $request->validate([
-            'name'              => 'required',
-            'email'             => 'required|email',
-            'date_of_birth'     => 'date_format:Y-m-d',
-            'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
-        ]);
-        $input_data = $request->all();
+        // $request->validate([
+        //     'name'              => 'required',
+        //     'email'             => 'required|email',
+        //     'date_of_birth'     => 'date_format:Y-m-d',
+        //     'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        // ]);
+        
+
+        // $validate = Validator::make($request->all(), [
+        //     'name'              => 'required',
+        //     'email'             => 'required|email',
+        //     'date_of_birth'     => 'date_format:Y-m-d',
+        //     'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
+        // ],[
+        //     'date_of_birth.date_format' => 'Please enter validate date format'
+        // ]);
+
+        // if($validate->fails()) {
+        //     return back()->withErrors($validate->errors())->withInput();
+        // }
+
+        $input_data = $request->validated();
         if ($request->hasFile('image')) {
             $fileName = time() . '.' . $request->image->extension();
             $request->image->storeAs('public/images', $fileName);

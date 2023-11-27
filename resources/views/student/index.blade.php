@@ -31,6 +31,10 @@
                                 <th scope="col" class="px-6 py-3">Email</th>
                                 <th scope="col" class="px-6 py-3">Gender</th>
                                 <th scope="col" class="px-6 py-3">Date of Birth</th>
+                                <th scope="col" class="px-6 py-3">Class</th>
+                                <th scope="col" class="px-6 py-3">Reg No.</th>
+                                <th scope="col" class="px-6 py-3">Roll No.</th>
+                                <th scope="col" class="px-6 py-3">Result</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -45,6 +49,10 @@
                                 <td class="px-6 py-4">{{ $target->email }}</td>
                                 <td class="px-6 py-4 capitalize">{{ $target->gender }}</td>
                                 <td class="px-6 py-4 capitalize">{{ date('d/m/Y', strtotime($target->date_of_birth)) }}</td>
+                                <td class="px-6 py-4">{{ $target->class }}</td>
+                                <td class="px-6 py-4">{{ $target->reg_no }}</td>
+                                <td class="px-6 py-4">{{ $target->roll_no }}</td>
+                                <td class="px-6 py-4">{{ $target->result }}</td>
                                 <td>
                                     <a href="{{ route('students.edit', $target->id) }}">Edit</a> |
                                     <form action="{{ route('students.destroy', $target->id) }}" method="post" class="inline">
