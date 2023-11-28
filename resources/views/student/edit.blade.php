@@ -63,41 +63,71 @@
                                         <img src="{{ asset($student->image) }}" alt="">
                                     </div>
                                 </div>
-                                
+                            </div>
+
+                            <div>
+                                <label for="gender" class="mt-3 block">Gender</label>
+                                <input
+                                    id="male"
+                                    value="male"
+                                    name="gender"
+                                    type="radio"
+                                    class="appearance-none checked:bg-blue-500"
+                                    @if($student->gender === 'male') checked @endif
+                                />
+                                <label for="male">Male</label>
+
+                                <input
+                                    id="female"
+                                    value="female"
+                                    name="gender"
+                                    type="radio"
+                                    class="appearance-none checked:bg-blue-500"
+                                    @if($student->gender === 'female') checked @endif
+                                />
+                                <label for="female">Female</label>
+
+                                <input
+                                    id="others"
+                                    value="others"
+                                    name="gender"
+                                    type="radio"
+                                    class="appearance-none checked:bg-blue-500"
+                                    @if($student->gender === 'others') checked @endif
+                                />
+                                <label for="others">Others</label>
+                            </div>
+
+                            <div>
+                                <label for="class" class="block">Class:</label>
+                                <select name="class" id="class" class="w-full">
+                                    <option value="">--Select Class--</option>
+                                    @foreach($initialData['classes'] as $id => $name)
+                                        <option value="{{ $id }}">{{ $name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div>
+                                <label class="py-2" for="reg_no">Reg No.</label>
+                                <input type="text" name="reg_no" id="reg_no" class="w-full" />
+                            </div>
+                            <div>
+                                <label class="py-2" for="roll_no">Roll No.</label>
+                                <input type="text" name="roll_no" id="roll_no" class="w-full" />
+                            </div>
+                            <div>
+                                <label for="result" class="block">Result:</label>
+                                <select name="result" id="result" class="w-full">
+                                    <option value="">--Select Result--</option>
+                                    @foreach($initialData['results'] as $result)
+                                        <option value="{{ $result }}">{{ $result }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             
                         </div>
 
-                        <label for="gender" class="mt-3 block">Gender</label>
-                        <input
-                            id="male"
-                            value="male"
-                            name="gender"
-                            type="radio"
-                            class="appearance-none checked:bg-blue-500"
-                            @if($student->gender === 'male') checked @endif
-                        />
-                        <label for="male">Male</label>
 
-                        <input
-                            id="female"
-                            value="female"
-                            name="gender"
-                            type="radio"
-                            class="appearance-none checked:bg-blue-500"
-                            @if($student->gender === 'female') checked @endif
-                        />
-                        <label for="female">Female</label>
-
-                        <input
-                            id="others"
-                            value="others"
-                            name="gender"
-                            type="radio"
-                            class="appearance-none checked:bg-blue-500"
-                            @if($student->gender === 'others') checked @endif
-                        />
-                        <label for="others">Others</label>
 
                         <input
                           type="submit"

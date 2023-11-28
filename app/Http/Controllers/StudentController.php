@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TClass;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -33,7 +34,8 @@ class StudentController extends Controller
      */
     public function create()
     {
-        return view('student.create');
+        $initialData = $this->initialData();
+        return view('student.create', compact('initialData'));
     }
 
     /**
@@ -89,7 +91,8 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        return view('student.edit', compact('student'));
+        $initialData = $this->initialData();
+        return view('student.edit', compact('student', 'initialData'));
     }
 
     /**
@@ -120,5 +123,16 @@ class StudentController extends Controller
         Student::whereId($student->id)->delete();
         @unlink($student->image);
         return back()->with('success', 'Student has been Deleted.');
+    }
+
+    private function initialData() 
+    {
+        $classes = TClass::pluck('name', 'id')->toArray();
+        $results = ['A+', 'A', 'A-', 'B', 'C', 'D', 'F'];
+
+        return [
+            'classes' => $classes,
+            'results' => $results
+        ];
     }
 }
