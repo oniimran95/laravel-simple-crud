@@ -21,9 +21,12 @@
                                     name="name"
                                     type="text"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
-                                    placeholder="Name"
-                                    value="{{ $student->name }}"
+                                    placeholder="Name"                                   
+                                    value="{{ old('name') ?? $student->name }}"
                                 />
+                                @error('name')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="email" class="block">Email</label>
@@ -33,8 +36,11 @@
                                     type="email"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Email"
-                                    value="{{ $student->email }}"
+                                    value="{{ old('email') ?? $student->email }}"
                                 />
+                                @error('email')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="date_of_birth" class="block">Date of Birth</label>
@@ -44,8 +50,11 @@
                                     type="date"
                                     class="border border-gray-500 px-4 py-2 focus:outline-none focus:border-purple-500 w-full"
                                     placeholder="Date of Birth"
-                                    value="{{ date('Y-m-d', strtotime($student->date_of_birth)) }}"
+                                    value="{{ old('date_of_birth') ?? date('Y-m-d', strtotime($student->date_of_birth)) }}"
                                 />
+                                @error('date_of_birth')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
 
                             <div>
@@ -58,6 +67,9 @@
                                             type="file"
                                             class="py-2"
                                         />
+                                        @error('image')
+                                            <span class="text-red-700 block">{{$message}}</span>
+                                        @enderror
                                     </div>
                                     <div>
                                         <img src="{{ asset($student->image) }}" alt="">
@@ -73,7 +85,7 @@
                                     name="gender"
                                     type="radio"
                                     class="appearance-none checked:bg-blue-500"
-                                    @if($student->gender === 'male') checked @endif
+                                    @if(old('gender') == 'male') checked @elseif($student->gender === 'male') checked @endif
                                 />
                                 <label for="male">Male</label>
 
@@ -94,35 +106,48 @@
                                     type="radio"
                                     class="appearance-none checked:bg-blue-500"
                                     @if($student->gender === 'others') checked @endif
+                                    
                                 />
                                 <label for="others">Others</label>
                             </div>
 
                             <div>
-                                <label for="class" class="block">Class:</label>
-                                <select name="class" id="class" class="w-full">
+                                <label for="t_class_id" class="block">Class:</label>
+                                <select name="t_class_id" id="t_class_id" class="w-full">
                                     <option value="">--Select Class--</option>
                                     @foreach($initialData['classes'] as $id => $name)
-                                        <option value="{{ $id }}">{{ $name }}</option>
+                                        <option value="{{ $id }}" @if( old('t_class_id') == $id) selected @endif>{{ $name }}</option>
                                     @endforeach
                                 </select>
+                                @error('t_class_id')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label class="py-2" for="reg_no">Reg No.</label>
                                 <input type="text" name="reg_no" id="reg_no" class="w-full" />
+                                @error('reg_no')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label class="py-2" for="roll_no">Roll No.</label>
                                 <input type="text" name="roll_no" id="roll_no" class="w-full" />
+                                @error('roll_no')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             <div>
                                 <label for="result" class="block">Result:</label>
                                 <select name="result" id="result" class="w-full">
                                     <option value="">--Select Result--</option>
                                     @foreach($initialData['results'] as $result)
-                                        <option value="{{ $result }}">{{ $result }}</option>
+                                        <option value="{{ $result }}" @if( old('result') == $result) selected @endif>{{ $result }}</option>
                                     @endforeach
                                 </select>
+                                @error('result')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
                             </div>
                             
                         </div>

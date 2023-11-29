@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\TClass;
 use App\Models\Student;
+use App\Models\StudentClass;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\StoreStudentRequest;
+use App\Http\Requests\UpdateStudentRequest;
 
 class StudentController extends Controller
 {
@@ -98,20 +101,29 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
+    public function update(UpdateStudentRequest $request, Student $student)
     {
-        $old_img_path = $student->image;
-        $input_data = $request->except(['_token', '_method']);
-        if ($request->hasFile('image')) {
-            $fileName = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/images', $fileName);
-            $img_path = "storage/images/$fileName";
+        DB::transaction(function() use ($request, $student) {
+            $old_img_path = $student->image;
+            $input_data = $request->validated();
+            $student_items = ['name', 'email', 'date_of_birth'];
+            $class_items = ['t_class_id', 'reg_no', 'roll_no', 'result'];
 
-            $input_data['image'] = $img_path;
-        }
+            $student_data = array_diff_key($input_data, array_flip($class_items));
+            if ($request->hasFile('image')) {
+                $fileName = time() . '.' . $request->image->extension();
+                $request->image->storeAs('public/images', $fileName);
+                $img_path = "storage/images/$fileName";
 
-        Student::whereId($student->id)->update($input_data);
-        @unlink($old_img_path);
+                $student_data['image'] = $img_path;
+            }
+            Student::whereId($student->id)->update($student_data);
+
+            $class_data = array_diff_key($input_data, array_flip($student_items));
+            StudentClass::whereStudentId($student->id)->update($class_data);
+
+            @unlink($old_img_path);
+        });
         return redirect()->route('students.index')->with('success', 'Student has been Updated.');
     }
 
