@@ -44,40 +44,31 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStudentRequest $request)
+    public function store(StoreStudentRequest $request, Student $student)
     {
-        // $request->validate([
-        //     'name'              => 'required',
-        //     'email'             => 'required|email',
-        //     'date_of_birth'     => 'date_format:Y-m-d',
-        //     'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
-        // ]);
-        
 
-        // $validate = Validator::make($request->all(), [
-        //     'name'              => 'required',
-        //     'email'             => 'required|email',
-        //     'date_of_birth'     => 'date_format:Y-m-d',
-        //     'image'             => 'mimes:jpeg,jpg,png,gif|required|max:10000'
-        // ],[
-        //     'date_of_birth.date_format' => 'Please enter validate date format'
-        // ]);
-
-        // if($validate->fails()) {
-        //     return back()->withErrors($validate->errors())->withInput();
-        // }
-
+        DB::transaction(function() use ($request, $student) {
         $input_data = $request->validated();
-        if ($request->hasFile('image')) {
-            $fileName = time() . '.' . $request->image->extension();
-            $request->image->storeAs('public/images', $fileName);
-            $img_path = "storage/images/$fileName";
+        $student_items = ['name', 'email', 'date_of_birth'];
+        $class_items = ['t_class_id', 'reg_no', 'roll_no', 'result', 'status'];
 
-            $input_data['image'] = $img_path;
-        }
-        
+            $student_data = array_diff_key($input_data, array_flip($class_items));
+            if ($request->hasFile('image')) {
+                $fileName = time() . '.' . $request->image->extension();
+                $request->image->storeAs('public/images', $fileName);
+                $img_path = "storage/images/$fileName";
 
-        Student::create($input_data);
+                $input_data['image'] = $img_path;
+            }
+            
+
+            $student_info = Student::create($input_data);
+            
+            $class_data = array_diff_key($input_data, array_flip($student_items));
+            $class_data['student_id'] = $student_info->id;
+            StudentClass::create($class_data);
+            @unlink($old_img_path);
+        });
         return redirect()->route('students.index')->with('success', 'Student has been created successfully.');
     }
 
@@ -94,8 +85,9 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
+        $student_class = StudentClass::where('student_id', $student->id)->first();
         $initialData = $this->initialData();
-        return view('student.edit', compact('student', 'initialData'));
+        return view('student.edit', compact('student', 'initialData', 'student_class'));
     }
 
     /**
@@ -106,8 +98,8 @@ class StudentController extends Controller
         DB::transaction(function() use ($request, $student) {
             $old_img_path = $student->image;
             $input_data = $request->validated();
-            $student_items = ['name', 'email', 'date_of_birth'];
-            $class_items = ['t_class_id', 'reg_no', 'roll_no', 'result'];
+            $student_items = ['name', 'email', 'date_of_birth', 'image'];
+            $class_items = ['t_class_id', 'reg_no', 'roll_no', 'result', 'status'];
 
             $student_data = array_diff_key($input_data, array_flip($class_items));
             if ($request->hasFile('image')) {
@@ -119,9 +111,9 @@ class StudentController extends Controller
             }
             Student::whereId($student->id)->update($student_data);
 
+
             $class_data = array_diff_key($input_data, array_flip($student_items));
             StudentClass::whereStudentId($student->id)->update($class_data);
-
             @unlink($old_img_path);
         });
         return redirect()->route('students.index')->with('success', 'Student has been Updated.');
@@ -141,10 +133,12 @@ class StudentController extends Controller
     {
         $classes = TClass::pluck('name', 'id')->toArray();
         $results = ['A+', 'A', 'A-', 'B', 'C', 'D', 'F'];
+        $statuss = ['running', 'completed', 'droped', 'rejected'];
 
         return [
             'classes' => $classes,
-            'results' => $results
+            'results' => $results,
+            'statuss' => $statuss,
         ];
     }
 }

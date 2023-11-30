@@ -139,6 +139,18 @@
                                     <span class="text-red-700 block">{{$message}}</span>
                                 @enderror
                             </div>
+                            <div>
+                                <label for="status" class="block">Status</label>
+                                <select name="status" id="status" class="w-full">
+                                    <option value="">--Status--</option>
+                                    @foreach($initialData['statuss'] as $status)
+                                        <option value="{{ $status }}" @if(old('status') == $status) selected @endif>{{ $status }}</option>
+                                    @endforeach
+                                </select>
+                                @error('status')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
+                            </div>
                         </div>
 
                         <input

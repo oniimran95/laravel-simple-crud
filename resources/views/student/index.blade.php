@@ -35,6 +35,7 @@
                                 <th scope="col" class="px-6 py-3">Reg No.</th>
                                 <th scope="col" class="px-6 py-3">Roll No.</th>
                                 <th scope="col" class="px-6 py-3">Result</th>
+                                <th scope="col" class="px-6 py-3">Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -53,6 +54,7 @@
                                 <td class="px-6 py-4">{{ $target->reg_no }}</td>
                                 <td class="px-6 py-4">{{ $target->roll_no }}</td>
                                 <td class="px-6 py-4">{{ $target->result }}</td>
+                                <td class="px-6 py-4">{{ $target->status }}</td>
                                 <td>
                                     <a href="{{ route('students.edit', $target->id) }}">Edit</a> |
                                     <form action="{{ route('students.destroy', $target->id) }}" method="post" class="inline">

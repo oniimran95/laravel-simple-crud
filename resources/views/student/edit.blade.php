@@ -116,7 +116,7 @@
                                 <select name="t_class_id" id="t_class_id" class="w-full">
                                     <option value="">--Select Class--</option>
                                     @foreach($initialData['classes'] as $id => $name)
-                                        <option value="{{ $id }}" @if( old('t_class_id') == $id) selected @endif>{{ $name }}</option>
+                                        <option value="{{ $id }}" @if( old('t_class_id') == $id || $student_class->t_class_id == $id) selected @endif>{{ $name }}</option>
                                     @endforeach
                                 </select>
                                 @error('t_class_id')
@@ -125,14 +125,24 @@
                             </div>
                             <div>
                                 <label class="py-2" for="reg_no">Reg No.</label>
-                                <input type="text" name="reg_no" id="reg_no" class="w-full" />
+                                <input 
+                                type="text"
+                                name="reg_no" 
+                                id="reg_no" 
+                                class="w-full" 
+                                value="{{ old('reg_no') ?? $student_class->reg_no }}"/>
                                 @error('reg_no')
                                     <span class="text-red-700 block">{{$message}}</span>
                                 @enderror
                             </div>
                             <div>
                                 <label class="py-2" for="roll_no">Roll No.</label>
-                                <input type="text" name="roll_no" id="roll_no" class="w-full" />
+                                <input 
+                                type="text" 
+                                name="roll_no" 
+                                id="roll_no" 
+                                class="w-full"
+                                value="{{ old('roll_no') ?? $student_class->roll_no }}" />
                                 @error('roll_no')
                                     <span class="text-red-700 block">{{$message}}</span>
                                 @enderror
@@ -142,10 +152,22 @@
                                 <select name="result" id="result" class="w-full">
                                     <option value="">--Select Result--</option>
                                     @foreach($initialData['results'] as $result)
-                                        <option value="{{ $result }}" @if( old('result') == $result) selected @endif>{{ $result }}</option>
+                                        <option value="{{ $result }}" @if( old('result') == $result || $student_class->result == $result) selected @endif>{{ $result }}</option>
                                     @endforeach
                                 </select>
                                 @error('result')
+                                    <span class="text-red-700 block">{{$message}}</span>
+                                @enderror
+                            </div>
+                            <div>
+                                <label for="status" class="block">Status:</label>
+                                <select name="status" id="status" class="w-full">
+                                    <option value="">--Status--</option>
+                                    @foreach($initialData['statuss'] as $status)
+                                        <option value="{{ $status }}" @if( old('status') == $status || $student_class->status == $status) selected @endif>{{ $status }}</option>
+                                    @endforeach
+                                </select>
+                                @error('status')
                                     <span class="text-red-700 block">{{$message}}</span>
                                 @enderror
                             </div>

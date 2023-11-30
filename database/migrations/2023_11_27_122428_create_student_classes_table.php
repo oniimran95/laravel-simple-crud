@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('reg_no');
             $table->string('roll_no');
             $table->enum('result', ['A+', 'A', 'A-', 'B', 'C', 'D', 'F']);
-            $table->enum('status', ['running', 'completed', 'droped', 'rejected'])->default('running');
+            $table->enum('status', ['running', 'completed', 'droped', 'rejected']);
             $table->timestamps();
         });
     }
