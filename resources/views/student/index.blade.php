@@ -50,11 +50,11 @@
                                 <td class="px-6 py-4">{{ $target->email }}</td>
                                 <td class="px-6 py-4 capitalize">{{ $target->gender }}</td>
                                 <td class="px-6 py-4 capitalize">{{ date('d/m/Y', strtotime($target->date_of_birth)) }}</td>
-                                <td class="px-6 py-4">{{ $target->class }}</td>
-                                <td class="px-6 py-4">{{ $target->reg_no }}</td>
-                                <td class="px-6 py-4">{{ $target->roll_no }}</td>
-                                <td class="px-6 py-4">{{ $target->result }}</td>
-                                <td class="px-6 py-4">{{ $target->status }}</td>
+                                <td class="px-6 py-4">{{ @$target->classes->t_class->name }}</td>
+                                <td class="px-6 py-4">{{ @$target->classes->reg_no }}</td>
+                                <td class="px-6 py-4">{{ @$target->classes->roll_no }}</td>
+                                <td class="px-6 py-4">{{ @$target->classes->result }}</td>
+                                <td class="px-6 py-4">{{ @$target->classes->status }}</td>
                                 <td>
                                     <a href="{{ route('students.edit', $target->id) }}">Edit</a> |
                                     <form action="{{ route('students.destroy', $target->id) }}" method="post" class="inline">

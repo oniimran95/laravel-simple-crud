@@ -18,4 +18,8 @@ class Student extends Model
         'class',
         'department'
     ];
+
+    public function classes() {
+        return $this->hasOne(StudentClass::class);
+    }
 }

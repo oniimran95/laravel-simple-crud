@@ -18,17 +18,19 @@ class StudentController extends Controller
      */
     public function index()
     {
-        $targets = Student::select(
-                'students.*',
-                't_classes.name AS class',
-                'student_classes.reg_no',
-                'student_classes.roll_no',
-                'student_classes.result',
-                'student_classes.status'
-            )
-            ->leftJoin('student_classes', 'student_classes.student_id', 'students.id')
-            ->leftJoin('t_classes', 't_classes.id', 'student_classes.t_class_id')
-            ->paginate(25);
+        // $targets = Student::select(
+        //         'students.*',
+        //         't_classes.name AS class',
+        //         'student_classes.reg_no',
+        //         'student_classes.roll_no',
+        //         'student_classes.result',
+        //         'student_classes.status'
+        //     )
+        //     ->leftJoin('student_classes', 'student_classes.student_id', 'students.id')
+        //     ->leftJoin('t_classes', 't_classes.id', 'student_classes.t_class_id')
+        //     ->paginate(25);
+
+        $targets = Student::with('classes.tClass')->paginate(25);
         return view('student.index', compact('targets'));
     }
 
